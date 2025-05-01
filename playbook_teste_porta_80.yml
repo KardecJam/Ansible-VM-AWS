@@ -1,4 +1,4 @@
-- name: Verificar se o Ignex está na porta 80
+- name: Verificar se o Iginx está na porta 80
   hosts: all
   become: yes
 
