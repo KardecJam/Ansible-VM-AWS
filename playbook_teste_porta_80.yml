@@ -1,0 +1,14 @@
+- name: Verificar se o Ignex está na porta 80
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Verifica a porta 80 está ON
+      shell: ss -tuln | grep ':80 '
+      register: porta_80
+      failed_when: false
+
+    - name: Mostra o resultado
+      debug:
+        msg: "{{ 'Porta 80 está ativa!' if porta_80.stdout else 'Porta 80 NÃO está ativa!' }}"
+

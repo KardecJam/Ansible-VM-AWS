@@ -1,0 +1,2 @@
+[aws]
+54.207.79.212 ansible_user=ubuntu ansible_ssh_private_key_file=/home/kdc/aws-vm/lab1.pem
