@@ -1,0 +1,55 @@
+---
+- name: Instalar Docker e rodar NGINX
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Atualiza pacotes do sistema
+      apt:
+        update_cache: yes
+
+    - name: Instala dependências
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Adiciona chave GPG oficial do Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adiciona repositório do Docker
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Instala Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Garante que o serviço Docker está ativo
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Faz pull da imagem nginx
+      docker_image:
+        name: nginx
+        source: pull
+
+    - name: Sobe o container nginx na porta 80
+      docker_container:
+        name: nginx
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
+
